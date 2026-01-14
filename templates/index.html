@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Bike Rentals Predictor</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    label { display: inline-block; width: 230px; margin-top: 10px; }
+    input, select { width: 240px; padding: 6px; }
+    button { margin-top: 18px; padding: 8px 16px; }
+    .box { max-width: 560px; }
+    .result { margin-top: 22px; font-size: 18px; font-weight: bold; }
+    .error { margin-top: 22px; color: darkred; }
+  </style>
+</head>
+<body>
+
+<h2>Bike Rentals Prediction – Hourly</h2>
+<p>Fill in the information below to estimate the number of rented bikes.</p>
+
+<div class="box">
+<form method="POST">
+
+  <label>Season:</label>
+  <select name="season">
+    <option value="1" {% if form.get('season','1') == '1' %}selected{% endif %}>Spring</option>
+    <option value="2" {% if form.get('season') == '2' %}selected{% endif %}>Summer</option>
+    <option value="3" {% if form.get('season') == '3' %}selected{% endif %}>Fall</option>
+    <option value="4" {% if form.get('season') == '4' %}selected{% endif %}>Winter</option>
+  </select><br>
+
+  <label>Year:</label>
+  <select name="yr">
+    <option value="0" {% if form.get('yr','0') == '0' %}selected{% endif %}>2011</option>
+    <option value="1" {% if form.get('yr') == '1' %}selected{% endif %}>2012</option>
+  </select><br>
+
+  <label>Month:</label>
+  <select name="mnth">
+    <option value="1"  {% if form.get('mnth','1') == '1' %}selected{% endif %}>January</option>
+    <option value="2"  {% if form.get('mnth') == '2' %}selected{% endif %}>February</option>
+    <option value="3"  {% if form.get('mnth') == '3' %}selected{% endif %}>March</option>
+    <option value="4"  {% if form.get('mnth') == '4' %}selected{% endif %}>April</option>
+    <option value="5"  {% if form.get('mnth') == '5' %}selected{% endif %}>May</option>
+    <option value="6"  {% if form.get('mnth') == '6' %}selected{% endif %}>June</option>
+    <option value="7"  {% if form.get('mnth') == '7' %}selected{% endif %}>July</option>
+    <option value="8"  {% if form.get('mnth') == '8' %}selected{% endif %}>August</option>
+    <option value="9"  {% if form.get('mnth') == '9' %}selected{% endif %}>September</option>
+    <option value="10" {% if form.get('mnth') == '10' %}selected{% endif %}>October</option>
+    <option value="11" {% if form.get('mnth') == '11' %}selected{% endif %}>November</option>
+    <option value="12" {% if form.get('mnth') == '12' %}selected{% endif %}>December</option>
+  </select><br>
+
+  <label>Day of month:</label>
+  <input type="number" name="day" min="1" max="31"
+         value="{{ form.get('day', '15') }}" required><br>
+
+  <label>Hour of day:</label>
+  <input type="number" name="hr" min="0" max="23"
+         value="{{ form.get('hr', '8') }}" required><br>
+
+  <label>Weekday:</label>
+  <select name="weekday">
+    <option value="0" {% if form.get('weekday','0') == '0' %}selected{% endif %}>Sunday</option>
+    <option value="1" {% if form.get('weekday') == '1' %}selected{% endif %}>Monday</option>
+    <option value="2" {% if form.get('weekday') == '2' %}selected{% endif %}>Tuesday</option>
+    <option value="3" {% if form.get('weekday') == '3' %}selected{% endif %}>Wednesday</option>
+    <option value="4" {% if form.get('weekday') == '4' %}selected{% endif %}>Thursday</option>
+    <option value="5" {% if form.get('weekday') == '5' %}selected{% endif %}>Friday</option>
+    <option value="6" {% if form.get('weekday') == '6' %}selected{% endif %}>Saturday</option>
+  </select><br>
+
+  <label>Working day:</label>
+  <select name="workingday">
+    <option value="yes" {% if form.get('workingday','yes') == 'yes' %}selected{% endif %}>Yes</option>
+    <option value="no"  {% if form.get('workingday') == 'no' %}selected{% endif %}>No</option>
+  </select><br>
+
+  <label>Holiday:</label>
+  <select name="holiday">
+    <option value="no"  {% if form.get('holiday','no') == 'no' %}selected{% endif %}>No</option>
+    <option value="yes" {% if form.get('holiday') == 'yes' %}selected{% endif %}>Yes</option>
+  </select><br>
+
+  <label>Weather situation:</label>
+  <select name="weathersit">
+    <option value="1" {% if form.get('weathersit','1') == '1' %}selected{% endif %}>Clear / Few clouds</option>
+    <option value="2" {% if form.get('weathersit') == '2' %}selected{% endif %}>Mist / Cloudy</option>
+    <option value="3" {% if form.get('weathersit') == '3' %}selected{% endif %}>Light rain / Snow</option>
+    <option value="4" {% if form.get('weathersit') == '4' %}selected{% endif %}>Heavy rain / Storm</option>
+  </select><br>
+
+  <label>Temperature (°C):</label>
+  <input type="number" step="0.1" name="temp_c"
+         value="{{ form.get('temp_c', '12.0') }}" required><br>
+
+  <label>Humidity (%):</label>
+  <input type="number" step="1" name="hum_percent"
+         value="{{ form.get('hum_percent', '60') }}" required><br>
+
+  <label>Wind speed:</label>
+  <input type="number" step="0.1" name="windspeed"
+         value="{{ form.get('windspeed', '8.0') }}" required><br>
+
+  <button type="submit">Predict rentals</button>
+</form>
+
+{% if prediction is not none %}
+  <div class="result">
+    Predicted number of bike rentals: {{ "%.2f"|format(prediction) }}
+  </div>
+{% endif %}
+
+{% if error %}
+  <div class="error">Error: {{ error }}</div>
+{% endif %}
+</div>
+
+</body>
+</html>
